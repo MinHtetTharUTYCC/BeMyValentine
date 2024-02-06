@@ -42,6 +42,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -65,21 +66,21 @@ fun BeMyValentineApp() {
     var currentPropose by remember { mutableStateOf("") }
 
     val nosList = listOf(
-        NoAndPhoto(null, "No"),
-        NoAndPhoto(null, "Are you sure?"),
-        NoAndPhoto(null, "Really sure?"),
-        NoAndPhoto(null, "Think again!"),
-        NoAndPhoto(null, "Last chance!"),
-        NoAndPhoto(null, "Surely not!"),
-        NoAndPhoto(null, "You might regret this!"),
-        NoAndPhoto(null, "Give it another thought!"),
-        NoAndPhoto(null, "Are you absolutely certain?"),
-        NoAndPhoto(null, "This could be a mistake!"),
-        NoAndPhoto(null, "Have a heart!"),
-        NoAndPhoto(null, "Change of heart?"),
-        NoAndPhoto(null, "Wouldn't you consider?"),
-        NoAndPhoto(null, "Is that your final answer?"),
-        NoAndPhoto(R.drawable.fourteen, "You are breaking my heart ;(")
+        NoAndPhoto(R.drawable.one_1, "No"),
+        NoAndPhoto(R.drawable.two_2, "Are you sure?"),
+        NoAndPhoto(R.drawable.three_3, "Really sure?"),
+        NoAndPhoto(R.drawable.four_4, "Think again!"),
+        NoAndPhoto(R.drawable.five_5, "Last chance!"),
+        NoAndPhoto(R.drawable.six_6, "Surely not!"),
+        NoAndPhoto(R.drawable.seven_7, "You might regret this!"),
+        NoAndPhoto(R.drawable.eight_8, "Give it another thought!"),
+        NoAndPhoto(R.drawable.nine_9, "Are you absolutely certain?"),
+        NoAndPhoto(R.drawable.ten_10, "This could be a mistake!"),
+        NoAndPhoto(R.drawable.eleven_11, "Have a heart!"),
+        NoAndPhoto(R.drawable.twelve, "Change of heart?"),
+        NoAndPhoto(R.drawable.thirteen_13, "Wouldn't you consider?"),
+        NoAndPhoto(R.drawable.fourteen_14, "Is that your final answer?"),
+        NoAndPhoto(R.drawable.fifteen_last_15, "You are breaking my heart ;(")
     )
     var currentNoIndex by remember { mutableStateOf(0) }
 
@@ -105,7 +106,7 @@ fun BeMyValentineApp() {
                 elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.our),
+                    painter = painterResource(id = nosList[currentNoIndex].photoResId),
                     contentDescription = stringResource(R.string.our_bagan),
                     contentScale = ContentScale.FillBounds,
                     modifier = Modifier.fillMaxSize(),
@@ -116,8 +117,30 @@ fun BeMyValentineApp() {
             }
         }
 
+        var gifId = when (currentNoIndex) {
+            14-> if(!isEndOfNo) R.drawable.i_am_fine else R.drawable.meow_dancing
+
+            else -> { R.drawable.meow_dancing }
+        }
+        Box(modifier = Modifier
+            .fillMaxSize()
+            .padding(paddingValues), contentAlignment = Alignment.TopCenter) {
+            Card(
+                modifier = Modifier.size(200.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = Color.Transparent
+                )
+            ) {
+                if(isAccepted){
+                    gifId = R.drawable.meow_kiss
+                }
+                GifImage(gifId)
+            }
+        }
+
+        /*
         if (isEndOfNo) {
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter) {
                 Card(
                     modifier = Modifier.size(200.dp),
                 ) {
@@ -131,7 +154,7 @@ fun BeMyValentineApp() {
             }
 
         } else {
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter) {
                 nosList[currentNoIndex]?.photoResId?.let { photoResId ->
                     Card(
                         modifier = Modifier.size(200.dp),
@@ -140,11 +163,6 @@ fun BeMyValentineApp() {
                         )
                     ) {
                         painterResource(id = photoResId)?.let { painter ->
-//                            Image(
-//                                painter = painter,
-//                                contentDescription = null,
-//                                contentScale = ContentScale.FillBounds
-//                            )
                             GifImage(drawableRes = R.drawable.tears_cry)
                         }
                     }
@@ -152,37 +170,22 @@ fun BeMyValentineApp() {
 
             }
         }
+         */
 
         if (isAccepted) {   //Congratulations
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) {
-                Card(
-                    modifier = Modifier.size(200.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = Color.Transparent
-                    )
-
-                ) {
-//                    Image(
-//                        painter = painterResource(id = R.drawable.kiss),
-//                        contentDescription = null,
-//                        contentScale = ContentScale.FillBounds
-//                    )
-                    GifImage(R.drawable.my_gif)
-
-                }
-            }
             Column(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                Spacer(modifier = Modifier.height(200.dp))
                 Text(
                     text = stringResource(R.string.see_you),
                     color = Color.White,
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.titleLarge)
 //                DisplayGif()
-                
+
             }
 
         } else {
@@ -192,14 +195,14 @@ fun BeMyValentineApp() {
                     .padding(paddingValues)
                     .fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
+                verticalArrangement = Arrangement.Bottom
             ) {
 
                 Text(
                     text = currentPropose,
                     color = Color.White,
-                    style = MaterialTheme.typography.titleLarge,
-                    textAlign = TextAlign.Center
+                    style = MaterialTheme.typography.titleMedium,
+                    textAlign = TextAlign.Center,
                 )
                 if (currentIndex <= propose_each_word.size - 1) {
                     LaunchedEffect(currentIndex) {
@@ -231,8 +234,8 @@ fun BeMyValentineApp() {
 
 
                     fun reject() {
-                        yesSize += 10
-                        yesFont += 5
+                        yesSize += 5
+                        yesFont += 2
 
                         currentNoIndex++
 
@@ -245,6 +248,7 @@ fun BeMyValentineApp() {
                                     reject()
                                 } else {
                                     isEndOfNo = true
+                                    yesSize = 60
                                 }
                             },
                             modifier = Modifier
@@ -254,6 +258,7 @@ fun BeMyValentineApp() {
                         }
                     }
                 }
+                Spacer(modifier = Modifier.height(50.dp))
 
             }
 
@@ -263,52 +268,7 @@ fun BeMyValentineApp() {
     }
 }
 
-//@Composable
-//fun DisplayGif() {
-//
-//    var gifDrawable by remember { mutableStateOf<GifDrawable?>(null) }
-//
-//    DisposableEffect(Unit) {
-//        // Load GIF using Glide
-//        val context = LocalContext.current
-//        Glide.with(context)
-//            .asGif()
-//            .load(R.drawable.my_gif) // Replace with your actual GIF resource
-//            .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-//            .into(object : CustomTarget<GifDrawable>() {
-//                override fun onResourceReady(
-//                    resource: GifDrawable,
-//                    transition: com.bumptech.glide.request.transition.Transition<in GifDrawable>?
-//                ) {
-//                    // Set the loaded GIF drawable
-//                    gifDrawable = resource
-//                }
-//
-//                override fun onLoadCleared(placeholder: Drawable?) {
-//                    // Handle GIF load cleared
-//                }
-//            })
-//
-//        onDispose {
-//            // Dispose of resources when the composable is disposed
-//            gifDrawable?.stop()
-//            gifDrawable = null
-//        }
-//    }
-//
-//    // Display GIF in Image composable
-//    gifDrawable?.let { gif ->
-//        Image(
-//            painter = rememberDrawablePainter(drawable = gif),
-//            contentDescription = null,
-//            modifier = Modifier
-//                .fillMaxSize()
-//                .padding(16.dp)
-//        )
-//    }
-//}
-
-data class NoAndPhoto(val photoResId: Int?, val no: String)
+data class NoAndPhoto(val photoResId: Int, val no: String)
 
 @Composable
 fun GifImage(@DrawableRes drawableRes: Int) {
