@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -42,7 +41,6 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -77,10 +75,10 @@ fun BeMyValentineApp() {
         NoAndPhoto(R.drawable.nine_9, "Are you absolutely certain?"),
         NoAndPhoto(R.drawable.ten_10, "This could be a mistake!"),
         NoAndPhoto(R.drawable.eleven_11, "Have a heart!"),
-        NoAndPhoto(R.drawable.twelve, "Change of heart?"),
+        NoAndPhoto(R.drawable.twelve_12, "Change of heart?"),
         NoAndPhoto(R.drawable.thirteen_13, "Wouldn't you consider?"),
         NoAndPhoto(R.drawable.fourteen_14, "Is that your final answer?"),
-        NoAndPhoto(R.drawable.fifteen_last_15, "You are breaking my heart ;(")
+        NoAndPhoto(R.drawable.fifteen_15, "You are breaking my heart ;(")
     )
     var currentNoIndex by remember { mutableStateOf(0) }
 
@@ -89,6 +87,7 @@ fun BeMyValentineApp() {
     var yesSize by remember { mutableStateOf(40) }
     var yesFont by remember { mutableStateOf(15) }
     var isEndOfNo by remember { mutableStateOf(false) }
+    var isFinal by remember { mutableStateOf(false) }
     var isAccepted by remember { mutableStateOf(false) }
 
 
@@ -98,15 +97,11 @@ fun BeMyValentineApp() {
         },
 
         ) { paddingValues ->
+        var currentPhotoId = if(isEndOfNo || isAccepted) R.drawable.last else nosList[currentNoIndex].photoResId
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Card(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .matchParentSize(),
-                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-            ) {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
                 Image(
-                    painter = painterResource(id = nosList[currentNoIndex].photoResId),
+                    painter = painterResource(id = currentPhotoId),
                     contentDescription = stringResource(R.string.our_bagan),
                     contentScale = ContentScale.FillBounds,
                     modifier = Modifier.fillMaxSize(),
@@ -222,6 +217,7 @@ fun BeMyValentineApp() {
                 ) {
                     fun accepted() {
                         isAccepted = true
+                        currentPhotoId = R.drawable.last
                     }
                     Button(
                         onClick = { accepted() },
@@ -236,7 +232,6 @@ fun BeMyValentineApp() {
                     fun reject() {
                         yesSize += 5
                         yesFont += 2
-
                         currentNoIndex++
 
                     }
@@ -248,7 +243,6 @@ fun BeMyValentineApp() {
                                     reject()
                                 } else {
                                     isEndOfNo = true
-                                    yesSize = 60
                                 }
                             },
                             modifier = Modifier
@@ -256,6 +250,9 @@ fun BeMyValentineApp() {
                         ) {
                             Text(nosList[currentNoIndex].no, fontFamily = fontFamily, fontSize = 15.sp, textAlign = TextAlign.Center)
                         }
+                    }
+                    else {
+                        isFinal = true
                     }
                 }
                 Spacer(modifier = Modifier.height(50.dp))
