@@ -63,22 +63,30 @@ fun BeMyValentineApp() {
     val propose_each_word = propose.split(" ")
     var currentPropose by remember { mutableStateOf("") }
 
+//    val nosList = listOf(
+//        NoAndPhoto(R.drawable.one_1, "No"),
+//        NoAndPhoto(R.drawable.two_2, "Are you sure?"),
+//        NoAndPhoto(R.drawable.three_3, "Really sure?"),
+//        NoAndPhoto(R.drawable.four_4, "Think again!"),
+//        NoAndPhoto(R.drawable.five_5, "Last chance!"),
+//        NoAndPhoto(R.drawable.six_6, "Surely not!"),
+//        NoAndPhoto(R.drawable.seven_7, "You might regret this!"),
+//        NoAndPhoto(R.drawable.eight_8, "Give it another thought!"),
+//        NoAndPhoto(R.drawable.nine_9, "Are you absolutely certain?"),
+//        NoAndPhoto(R.drawable.ten_10, "This could be a mistake!"),
+//        NoAndPhoto(R.drawable.eleven_11, "Have a heart!"),
+//        NoAndPhoto(R.drawable.twelve_12, "Change of heart?"),
+//        NoAndPhoto(R.drawable.thirteen_13, "Wouldn't you consider?"),
+//        NoAndPhoto(R.drawable.fourteen_14, "Is that your final answer?"),
+//        NoAndPhoto(R.drawable.fifteen_15, "You are breaking my heart ;(")
+//    )
+
     val nosList = listOf(
         NoAndPhoto(R.drawable.one_1, "No"),
         NoAndPhoto(R.drawable.two_2, "Are you sure?"),
         NoAndPhoto(R.drawable.three_3, "Really sure?"),
         NoAndPhoto(R.drawable.four_4, "Think again!"),
         NoAndPhoto(R.drawable.five_5, "Last chance!"),
-        NoAndPhoto(R.drawable.six_6, "Surely not!"),
-        NoAndPhoto(R.drawable.seven_7, "You might regret this!"),
-        NoAndPhoto(R.drawable.eight_8, "Give it another thought!"),
-        NoAndPhoto(R.drawable.nine_9, "Are you absolutely certain?"),
-        NoAndPhoto(R.drawable.ten_10, "This could be a mistake!"),
-        NoAndPhoto(R.drawable.eleven_11, "Have a heart!"),
-        NoAndPhoto(R.drawable.twelve_12, "Change of heart?"),
-        NoAndPhoto(R.drawable.thirteen_13, "Wouldn't you consider?"),
-        NoAndPhoto(R.drawable.fourteen_14, "Is that your final answer?"),
-        NoAndPhoto(R.drawable.fifteen_15, "You are breaking my heart ;(")
     )
     var currentNoIndex by remember { mutableStateOf(0) }
 
@@ -97,7 +105,7 @@ fun BeMyValentineApp() {
         },
 
         ) { paddingValues ->
-        var currentPhotoId = if(isEndOfNo || isAccepted) R.drawable.last else nosList[currentNoIndex].photoResId
+        var currentPhotoId = if (isAccepted) R.drawable.last else if (isEndOfNo) R.drawable.before_last else nosList[currentNoIndex].photoResId
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
                 Image(
@@ -113,7 +121,7 @@ fun BeMyValentineApp() {
         }
 
         var gifId = when (currentNoIndex) {
-            14-> if(!isEndOfNo) R.drawable.i_am_fine else R.drawable.meow_dancing
+            4-> if(!isEndOfNo) R.drawable.i_am_fine else R.drawable.meow_dancing
 
             else -> { R.drawable.meow_dancing }
         }
